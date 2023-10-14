@@ -6,12 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, TestPassword } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags, ApiConsumes } from '@nestjs/swagger';
 import { log } from 'console';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { initializeApp } from 'firebase/app';
 
 @ApiTags('User')
 @Controller('user')
@@ -21,6 +25,26 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+
+  @Post('upload-dp')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+    required: true,
+  })
+  @UseInterceptors(FileInterceptor('file'))
+  saveProfilePic(@UploadedFile() file: Express.Multer.File) {
+    return this.userService.saveProfilePic(file);
   }
 
   @Get()

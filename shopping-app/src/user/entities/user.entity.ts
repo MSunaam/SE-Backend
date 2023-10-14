@@ -53,6 +53,24 @@ export class User {
 
   @Prop({
     required: false,
+    select: false,
+  })
+  @ApiProperty({
+    description: 'The refresh token of the User',
+    required: false,
+  })
+  refresh_token: string;
+
+  @Prop({
+    required: true,
+  })
+  @ApiProperty({
+    description: 'The profile picture of the User',
+  })
+  profilePicture: string;
+
+  @Prop({
+    required: false,
   })
   @ApiProperty({
     description: 'The address of the User',
