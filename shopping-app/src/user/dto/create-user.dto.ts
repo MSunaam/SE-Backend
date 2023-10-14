@@ -21,6 +21,11 @@ export class CreateUserDto {
   })
   password: string;
   @ApiProperty({
+    description: 'The profile picture of the User',
+    required: true,
+  })
+  profilePicture: string;
+  @ApiProperty({
     description: 'The address of the User',
   })
   address: string;
